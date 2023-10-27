@@ -1,21 +1,22 @@
+require 'dotenv/load'
 require 'sinatra'
+require 'sinatra/base'
 require 'discordrb'
 
-# Initialize Discord bot
-bot = Discordrb::Bot.new(token: ENV['TOKEN'])
-
-# Sinatra route for the home page
-get '/' do
-  "Hello, World!"
-end
+BOT = Discordrb::Bot.new(token: ENV['DISCORD_API_TOKEN'])
 
 # Discord bot event for "Ping!" message
-bot.message(content: 'Ping!') do |event|
+BOT.message(content: 'Ping!') do |event|
   event.respond 'Pong!'
 end
 
 # Run the Discord bot
-Thread.new { bot.run }
+Thread.new { BOT.run }
 
-# Run Sinatra
-run Sinatra::Application.run!
+
+class App < Sinatra::Base
+  get '/' do
+    'Hello from docker!'
+  end
+end
+

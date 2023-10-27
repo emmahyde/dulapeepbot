@@ -1,10 +1,16 @@
 version: "2.1"
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "4567:4567"
     volumes:
-      - .:/app
+      - .:/app:cached
     working_dir: /app
+    environment:
+      RACK_ENV: development
+      DISCORD_API_TOKEN:
+      TZ: UTC
     command: bundle exec ruby app.rb -o 0.0.0.0

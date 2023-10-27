@@ -1,11 +1,9 @@
-FROM ruby:3.2-alpine
+FROM ruby:3.2-bullseye AS sinatra_bundle
 
-WORKDIR /myapp
-COPY Gemfile /myapp/Gemfile
-COPY Gemfile.lock /myapp/Gemfile.lock
+COPY Gemfile /app/Gemfile
+
+WORKDIR /app
 RUN bundle install
-COPY . /myapp
+COPY . /app
 
-EXPOSE 5000
-
-CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0", "-p", "5000"]
+ENTRYPOINT ["bundle", "exec", "rackup", "--host", "0.0.0.0", "-p", "4567"]
