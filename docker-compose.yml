@@ -13,4 +13,4 @@ services:
       RACK_ENV: development
       DISCORD_API_TOKEN:
       TZ: UTC
-    command: bundle exec ruby app.rb -o 0.0.0.0
+    entrypoint: bundle exec rackup --host 0.0.0.0 -p 4567
