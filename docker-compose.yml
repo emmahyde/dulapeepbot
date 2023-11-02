@@ -10,7 +10,7 @@ services:
       - .:/app:cached
     working_dir: /app
     environment:
-      RACK_ENV: development
-      DISCORD_API_TOKEN:
-      TZ: UTC
+      - RACK_ENV=${RACK_ENV}
+      - DISCORD_API_TOKEN=${DISCORD_API_TOKEN}
+      - TZ=${TZ}
     entrypoint: bundle exec rackup --host 0.0.0.0 -p 4567
