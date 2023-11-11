@@ -20,11 +20,20 @@ class Channel
     ).sort_by! { |msg| Time.parse(msg[:timestamp]) }
   end
 
-  def self.get_message_ids(token, channel_id, num_days)
+  def self.get_message_ids(token, channel_id, days)
+
+    # if days.is_a? Integer
+    ### EARLIEST_MSG   = nil
+    ### END_TIME_RANGE = days_ago(days)
+    # elsif days.is_a? Range
+    ### EARLIEST_MSG   = first message from the first day of the range
+    ### END_TIME_RANGE = last day of the range
+    # end
+
     earliest_ts = Time.now
     earliest_msg = nil
     messages = []
-    end_time_range = days_ago(num_days)
+    end_time_range = days_ago(days)
 
     while earliest_ts > end_time_range
       new_messages = Channel.get_messages(token, channel_id, earliest_msg)
@@ -32,20 +41,18 @@ class Channel
       earliest_msg = new_messages.first
       earliest_ts = Time.parse(earliest_msg[:timestamp])
 
-      messages = new_messages << messages
+      messages = new_messages + messages
     end
 
     filtered_messages = messages.filter do |msg|
-      Time.parse(msg[:timestamp]) > days_ago(num_days)
+      Time.parse(msg[:timestamp]) > days_ago(days)
     end
 
     filtered_messages.map { |msg| msg[:id] }
+  end
 
-  rescue Exception => e
-     puts e.class
-     puts e.message
-     puts e.backtrace
-
+  def self.delete_message(token, channel_id, message_id)
+    Discordrb::API::Channel.delete_message(token, channel_id, message_id)
   end
 
   def self.bulk_delete_messages(token, channel_id, message_ids)

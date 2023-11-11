@@ -2,14 +2,16 @@ require 'dotenv/load'
 require 'sinatra'
 require 'sinatra/base'
 require 'discordrb'
+require 'awesome_print'
 
+require_relative 'lib/api'
 require_relative 'lib/register_commands'
-require_relative 'lib/channel'
 
 TOKEN = ENV.fetch 'DISCORD_API_TOKEN', nil
 
 class DulaPeepBot
   def initialize(token:)
+    @api = Api.new(bot.token)
     @bot = Discordrb::Bot.new(
       token:   token,
       intents: [:server_messages]
@@ -24,17 +26,26 @@ class DulaPeepBot
   private
 
   def define_commands
-    bot.application_command(:purge) { |event| purge(event) }
+    @bot.application_command(:purge)   { |event| purge(event) }
+    @bot.application_command(:cleanup) { |event| cleanup(event) }
   end
 
   def purge(event)
-    num_days = event.options['days']
-    message_ids = Channel.get_message_ids(bot.token, event.channel_id, num_days)
-    Channel.bulk_delete_messages(bot.token, event.channel_id, message_ids)
+    passed_days = event.options['days'] || 13
+    purgeable_days = [passed_days, 13].min
+
+    response = @api.post_bulk_delete(event.channel_id, purgeable_days)
+
+    if response
+      event.respond content: "status code **#{response.code}** for purge of **#{purgeable_days}** day(s)."
+    else
+      event.respond content: "No purgeable messages."
+    end
   end
 
+  def cleanup(event)
 
-
+  end
 end
 
 APP = DulaPeepBot.new(token: TOKEN)
