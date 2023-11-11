@@ -27,7 +27,7 @@ class DulaPeepBot
 
   def define_commands
     @bot.application_command(:purge)   { |event| purge(event) }
-    @bot.application_command(:cleanup) { |event| cleanup(event) }
+    # @bot.application_command(:cleanup) { |event| cleanup(event) }
   end
 
   def purge(event)
