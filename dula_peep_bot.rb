@@ -31,21 +31,25 @@ class DulaPeepBot
   end
 
   def purge(event)
-    passed_days = event.options['days'] || 13
-    purgeable_days = [passed_days, 13].min
+    silent = event.options['silent'] || false
+    days   = event.options['days'] || 13
+
+    purgeable_days = [days, 13].min
 
     response = @api.post_bulk_delete(event.channel_id, purgeable_days)
 
-    if response
-      event.respond content: "status code **#{response.code}** for purge of **#{purgeable_days}** day(s)."
-    else
-      event.respond content: "No purgeable messages."
+    unless silent
+      if response
+        event.respond content: "status code **#{response.code}** for purge of **#{purgeable_days}** day(s)."
+      else
+        event.respond content: "No purgeable messages."
+      end
     end
   end
 
-  def cleanup(event)
-
-  end
+  # def cleanup(event)
+  #
+  # end
 end
 
 APP = DulaPeepBot.new(token: TOKEN)
