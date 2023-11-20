@@ -1,7 +1,7 @@
 require_relative 'register_commands'
 
 class CommandDefinitions
-  extend RegisterCommands
+  include RegisterCommands
 
   def initialize(bot, api)
     @bot = bot

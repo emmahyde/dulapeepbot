@@ -1,8 +1,17 @@
+require 'redis'
+require 'connection_pool'
 require_relative './channel'
 
 class Api
   def initialize(bot_token)
     @bot_token = bot_token
+  end
+
+  # @return [ConnectionPool::Wrapper] the redis connection_pool instance
+  def self.redis
+    @redis ||= ConnectionPool::Wrapper.new do
+      Redis.new url: ENV.fetch('REDIS_URL', nil)
+    end
   end
 
   # @param [Numeric] days

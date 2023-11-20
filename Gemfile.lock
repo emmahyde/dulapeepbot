@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     awesome_print (1.9.2)
+    connection_pool (2.4.1)
     diff-lcs (1.5.0)
     discordrb (3.5.0)
       discordrb-webhooks (~> 3.5.0)
@@ -11,8 +12,7 @@ GEM
       websocket-client-simple (>= 0.3.0)
     discordrb-webhooks (3.5.0)
       rest-client (>= 2.0.0)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
+    domain_name (0.6.20231109)
     dotenv (2.8.1)
     event_emitter (0.2.6)
     ffi (1.16.3)
@@ -25,7 +25,7 @@ GEM
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
-    nio4r (2.5.9)
+    nio4r (2.6.0)
     opus-ruby (1.0.1)
       ffi
     puma (6.4.0)
@@ -33,6 +33,10 @@ GEM
     rack (2.2.8)
     rack-protection (3.1.0)
       rack (~> 2.2, >= 2.2.4)
+    redis (5.0.8)
+      redis-client (>= 0.17.0)
+    redis-client (0.18.0)
+      connection_pool
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -58,9 +62,6 @@ GEM
       rack-protection (= 3.1.0)
       tilt (~> 2.0)
     tilt (2.3.0)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.8.2)
     websocket (1.2.10)
     websocket-client-simple (0.8.0)
       event_emitter
@@ -68,13 +69,14 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  x86_64-darwin-23
 
 DEPENDENCIES
   awesome_print (~> 1.9)
+  connection_pool (~> 2.4)
   discordrb
   dotenv
   puma
+  redis (~> 5.0)
   rspec
   sinatra
 
