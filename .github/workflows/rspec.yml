@@ -1,0 +1,21 @@
+#---
+#name: "Test: Rspec"
+#on:
+#  push:
+#    branches:
+#      - master
+#      - back-office-staging
+#  pull_request:
+#    # No branch filter here: while it saves some CI cost, it's surprising
+#    # behavior that has led to the creation of some Barge tickets that cost
+#    # more in dev time than just running the jobs would cost in CI time
+#    types:
+#      # These three are defaults
+#      # (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request)
+#      - opened
+#      - reopened
+#      - synchronize
+#  workflow_dispatch:
+#jobs:
+#  test:
+#    runs-on: ubuntu-20.04

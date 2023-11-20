@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4567:4567"
+    volumes:
+      - .:/app:cached
+    working_dir: /app
+    environment:
+      - RACK_ENV=${RACK_ENV}
+      - DISCORD_API_TOKEN=${DISCORD_API_TOKEN}
+      - TZ=${TZ}
+    entrypoint: bundle exec rackup --host 0.0.0.0 -p 4567
