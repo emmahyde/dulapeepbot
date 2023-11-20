@@ -19,7 +19,7 @@ jobs:
 
       - name: Build container image
         run: >
-          docker build -t
+          docker build . -t
           registry.digitalocean.com/emmahyde-containers/dulapeepbot:latest
 
       - name: Install doctl
