@@ -11,14 +11,16 @@ TOKEN = ENV.fetch 'DISCORD_API_TOKEN', nil
 
 class DulaPeepBot
   def initialize(token:)
-    @api = Api.new(bot.token)
+    @api = Api.new(token)
     @bot = Discordrb::Bot.new(
       token:   token,
       intents: [:server_messages]
     )
 
-    CommandDefinitions.new(bot, api)
+    CommandDefinitions.new(@bot, @api)
   end
+
+  attr_reader :bot, :api
 end
 
 APP = DulaPeepBot.new(token: TOKEN)
