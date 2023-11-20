@@ -40,8 +40,4 @@ jobs:
 
       - name: Compose and Run 'dulapeepbot:latest'
         run: >
-          DISCORD_CLIENT_ID=$DISCORD_CLIENT_ID
-          DISCORD_API_TOKEN=$DISCORD_API_TOKEN
-          TZ=$TZ
           docker compose up -d --build
-
