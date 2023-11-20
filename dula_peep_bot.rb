@@ -5,7 +5,7 @@ require 'discordrb'
 require 'awesome_print'
 
 require_relative 'lib/api'
-require_relative 'lib/register_commands'
+require_relative 'lib/command_definitions'
 
 TOKEN = ENV.fetch 'DISCORD_API_TOKEN', nil
 
@@ -17,39 +17,8 @@ class DulaPeepBot
       intents: [:server_messages]
     )
 
-    RegisterCommands.new(@bot).call
-    define_commands
+    CommandDefinitions.new(bot, api)
   end
-
-  attr_reader :bot
-
-  private
-
-  def define_commands
-    @bot.application_command(:purge)   { |event| purge(event) }
-    # @bot.application_command(:cleanup) { |event| cleanup(event) }
-  end
-
-  def purge(event)
-    silent = event.options['silent'] || false
-    days   = event.options['days'] || 13
-
-    purgeable_days = [days, 13].min
-
-    response = @api.post_bulk_delete(event.channel_id, purgeable_days)
-
-    unless silent
-      if response
-        event.respond content: "status code **#{response.code}** for purge of **#{purgeable_days}** day(s)."
-      else
-        event.respond content: "No purgeable messages."
-      end
-    end
-  end
-
-  # def cleanup(event)
-  #
-  # end
 end
 
 APP = DulaPeepBot.new(token: TOKEN)

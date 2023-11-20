@@ -6,7 +6,7 @@ class Api
   end
 
   # @param [Numeric] days
-  def post_bulk_delete(channel_id, days)
+  def delete_messages(channel_id, days)
     message_ids = Channel.get_message_ids(
       @bot_token,
       channel_id,
