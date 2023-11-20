@@ -18,9 +18,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build container image
-        run: |
-          docker build -t \
-            registry.digitalocean.com/emmahyde-containers/dulapeepbot:latest
+        run: >
+          docker build -t
+          registry.digitalocean.com/emmahyde-containers/dulapeepbot:latest
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -31,16 +31,17 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Push image to DigitalOcean Container Registry
-        run: |
-          docker push \
-            registry.digitalocean.com/emmahyde-containers/dulapeepbot:latest
+        run: >
+          docker push
+          registry.digitalocean.com/emmahyde-containers/dulapeepbot:latest
 
       - name: Pull image to DigitalOcean 'dulapeepbot' Droplet
         run: docker image pull
 
       - name: Compose and Run 'dulapeepbot:latest'
-        run: |
-          DISCORD_CLIENT_ID=$DISCORD_CLIENT_ID \
-            DISCORD_API_TOKEN=$DISCORD_API_TOKEN \
-            TZ=$TZ \
-            docker compose up -d --build
+        run: >
+          DISCORD_CLIENT_ID=$DISCORD_CLIENT_ID
+          DISCORD_API_TOKEN=$DISCORD_API_TOKEN
+          TZ=$TZ
+          docker compose up -d --build
+
